@@ -1,6 +1,7 @@
 // Modules to control application life and create native browser window
 const {app, BrowserWindow} = require('electron')
 const path = require('path')
+const arctic = require('@openarctic/arcticjs')
 
 function createWindow () {
   // Create the browser window.
@@ -14,6 +15,15 @@ function createWindow () {
 
   // and load the index.html of the app.
   mainWindow.loadFile('index.html')
+
+  // Load arcticjs
+  var agent = arctic.create_client_agent(4);
+  agent.export("mainWindow", mainWindow);
+  var ret = agent.start();
+  if (ret != 0) {
+    app.exit(0);
+    return;
+  }
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
